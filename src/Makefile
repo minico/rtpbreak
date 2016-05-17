@@ -2,10 +2,9 @@
 
 include VERSION
 
-CC       = cc
-CFLAGS   = -Wall -O3  # debug: put -ggdb instead of -O3
-LDFLAGS  =
-LIBS     = -lpcap -lnet 
+CC       = gcc -gdwarf-2 -gstrict-dwarf
+CFLAGS   = -Wall #-O3  # debug: put -ggdb instead of -O3
+LIBS     = -L. -lpcap
 DEFS     = 
 
 #####################################################################
@@ -15,7 +14,7 @@ all: header
 	$(CC) -c -DVERSION=\"$(VERSION)\" $(CFLAGS) $(DEFS) main.c
 	$(CC) -c $(CFLAGS) $(DEFS) common.c
 	$(CC) -c $(CFLAGS) $(DEFS) net.c
-	$(CC) $(LDFLAGS) main.o common.o net.o -o rtpbreak $(LIBS)
+	$(CC) main.o common.o net.o -o rtpbreak $(LIBS)
 	@echo "%"
 
 header:
@@ -24,7 +23,6 @@ header:
 	@echo "%"
 	@echo "%  CC...................: $(CC)"
 	@echo "%  CFLAGS...............: $(CFLAGS)"
-	@echo "%  LDFLAGS..............: $(LDFLAGS)"
 	@echo "%  LIBS.................: $(LIBS)"
 	@echo "%  DEFS.................: $(DEFS)"
 	@echo "%"

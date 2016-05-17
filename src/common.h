@@ -1,5 +1,5 @@
 /*
- * common.h by xenion -- 2008-05-05 -- v.1293c16fff21c9e111936bd906f13e1c
+ * common.h by xenion -- 2008-02-21 16:15 -- v.1293c16fff21c9e111936bd906f13e1c
  *
  * Copyright (c) 2007-2008 Dallachiesa Michele <micheleDOTdallachiesaATposteDOTit>
  *

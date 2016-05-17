@@ -1,5 +1,5 @@
 /*
- * net.c by xenion -- 2008-05-05 -- v.0e2f795ca3b9af8bf863598b0a729ec4
+ * net.c by xenion -- 2008-02-21 16:15 -- v.0d0b60836e1984ce683a573eccf65f2c
  *
  * Copyright (c) 2007-2008 Dallachiesa Michele <micheleDOTdallachiesaATposteDOTit>
  *
@@ -125,11 +125,11 @@ add_pcap_filter(pcap_t *p, char *s)
 
   if (!s)
     {
-      LOG(1,1," ! The pcap filter is NULL, ignored");
+      LOG(1,1,"pcap_filter is NULL, not added.");
       return;
     }
 
-//  LOG(1,1," * Adding pcap_filter: '%s'", s);
+  LOG(1,1,"adding pcap_filter: '%s'", s);
 
   if (pcap_compile(p, &bpf_filter, s, 0, 0) < 0)
     FATAL("pcap_compile(): %s", pcap_geterr(p));

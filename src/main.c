@@ -1,5 +1,5 @@
 /*
- * main.c by xenion -- 2008-05-05 -- v.262c5cbb0ef3c107aae3316bca65296f
+ * main.c by xenion -- 2008-02-21 16:15 -- v.09b6ffa1d91f9e6fb5a1857ce6501ade
  *
  * Copyright (c) 2007-2008 Dallachiesa Michele <micheleDOTdallachiesaATposteDOTit>
  *
@@ -24,6 +24,7 @@
 /* includes */
 
 #include <time.h>
+#include <netinet/udp.h>
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
@@ -722,9 +723,10 @@ int dissect_rtp(struct pcap_pkt *ppkt,u_int32_t pktoff, u_int32_t pktlen, addrs_
         return 0;
 
       // the extension, if present, is after the CSRC list.
-      rtpext = (rtp_extension_hdr_t *)((u_int8_t *)rtphdr+off);
-      off += sizeof(rtp_extension_hdr_t) + rtpext->length;
-      len -= sizeof(rtp_extension_hdr_t) + rtpext->length;
+      rtpext = (rtp_extension_hdr_t *)((u_int8_t *)ppkt->pkt+off);
+      int extLen = ntohs(rtpext->length) * 4;
+      off += sizeof(rtp_extension_hdr_t) + extLen;
+      len -= sizeof(rtp_extension_hdr_t) + extLen;
     }
 
   if (len < 0)
@@ -891,9 +893,9 @@ void rtp_stream_add_pkt(struct rtp_stream_entry *rtp_stream, pktrtp_t *pktrtp)
   else
     {
 
-      if (rtp_stream->first_pkt.tv_sec != 0)
-        if (ntohs(rtphdr->seq)<= rtp_stream->max_seq_seen)
-          return;
+      //if (rtp_stream->first_pkt.tv_sec != 0)
+       // if (ntohs(rtphdr->seq)<= rtp_stream->max_seq_seen)
+     //     return;
     }
 
 // la lista contiene i pkt ordinati con seq in ordine crescente
@@ -1174,7 +1176,7 @@ rtp_stream_open_files(struct rtp_stream_entry *rtp_stream)
 
   snprintf(pathname, PATH_MAX, "rtp.%d.",ndxlog);
 
-  get_next_name(o.outdir, pathname, ".txt", &count);
+  get_next_name(o.outdir, pathname, ".pcap", &count);
 
   if (count == -1)
     FATAL("get_next_name(...): %s", strerror(errno));
@@ -1189,8 +1191,6 @@ rtp_stream_open_files(struct rtp_stream_entry *rtp_stream)
     }
 
   snprintf(pathname, PATH_MAX, "%s/rtp.%d.%d.txt",o.outdir, ndxlog, rtp_stream->fid );
-
-  LOG(1,1,"open di %s", pathname);
 
   if (!(rtp_stream->f = fopen(pathname, "w")))
     FATAL("fopen(): %s", strerror(errno));

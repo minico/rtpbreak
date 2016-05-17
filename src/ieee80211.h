@@ -1,5 +1,5 @@
 /*
- * ieee80211.h by xenion -- 2008-05-05 -- v.c486a4662d73aaca28a52ba95febd8b3
+ * ieee80211.h by xenion -- 2008-02-21 16:15 -- v.c486a4662d73aaca28a52ba95febd8b3
  *
  * Copyright (c) 2007-2008 Dallachiesa Michele <micheleDOTdallachiesaATposteDOTit>
  *
